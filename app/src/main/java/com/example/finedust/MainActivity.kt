@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -22,6 +23,7 @@ import com.google.android.gms.tasks.CancellationTokenSource
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.Console
 import java.lang.Exception
 
 
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
     private var cancellationTokenSource : CancellationTokenSource ? =null
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var pmMax : String; private lateinit var pmMin : String;
 
     private val scope = MainScope()
 
@@ -41,6 +44,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        pmMax = "50";
+        pmMin = "30";
 
         bindViews()
         initVariables()
@@ -153,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                     val measuredValue =
                             Repository.getLatestAirQualityData(monitoringStation!!.stationName!!)
 
-                    displayAirQualityData(monitoringStation,measuredValue!!)
+                    displayAirQualityData(monitoringStation,measuredValue!!, pmMax, pmMin)
                 }catch (exception : Exception){
                     binding.errorDescriptionTextView.visibility = View.VISIBLE
                     binding.contentsLayout.alpha =0F
@@ -179,20 +185,37 @@ class MainActivity : AppCompatActivity() {
         }
     }
     @SuppressLint("SetTextI18n")
-    fun displayAirQualityData(monitoringStation: MonitoringStation, measuredValue: MeasuredValue) {
+    fun displayAirQualityData(monitoringStation: MonitoringStation, measuredValue: MeasuredValue, pmMax : String, pmMin : String) {
 
         binding.contentsLayout.animate()
                 .alpha(1F)
                 .start()
-        binding.measuringStationNameTextView.text = monitoringStation.stationName
+        binding.measuringStationNameTextView.text = monitoringStation.stationName       // 노원구
+        var str : String = binding.contentsLayout.animate().toString()
+        var str1 : String = binding.contentsLayout.animate().alpha(1F).toString()
+        var str2 : String = binding.contentsLayout.animate().alpha(1F).start().toString()
+        var str3 : String = binding.measuringStationNameTextView.text.toString()
+        Log.v("z", str);    // android.view.ViewPropertyAnimator@c3d2c8c
+        Log.v("z", str1);   // android.view.ViewPropertyAnimator@c3d2c8c
+        Log.v("z", str2);   // kotlin.Unit
+        Log.v("z", str3);   // 노원구
+        Log.v("z", pmMax);  // 50
+
 
         (measuredValue.khaiGrade ?: Grade.UNKNOWN).let { grade ->
             binding.root.setBackgroundResource(grade.colorResId)
             binding.totalGraddeLabelTextView.text = grade.label
             binding.totalGradeEmojiTextView.text = grade.emoji
+            Log.v("z", grade.colorResId.toString());                    // 2131165273
+            Log.v("z", grade.label.toString());                         // 나쁨
+            Log.v("z", grade.emoji.toString());                         // 이모티콘
+            Log.v("z", grade.toString());                               // 나쁨 , 이모티콘
         }
 
-        with(measuredValue) {
+            with(measuredValue) {
+//            if ( pm10Value > pmMax.toString()) {
+//
+//            }
             binding.fineDustInformationTextView.text =
                     "미세먼지: $pm10Value ㎍/㎥ ${(pm10Grade ?: Grade.UNKNOWN).emoji}"
             binding.ultraFineDuistInformationTextView.text =
