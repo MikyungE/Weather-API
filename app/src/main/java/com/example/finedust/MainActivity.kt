@@ -4,13 +4,15 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.finedust.RecyclerVierAdapter.OnItemClickEventListener
 import com.example.finedust.data.Repository
 import com.example.finedust.data.model.airquality.Grade
 import com.example.finedust.data.model.airquality.MeasuredValue
@@ -20,22 +22,21 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.CancellationTokenSource
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import java.io.Console
-import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
 
 
-    private var cancellationTokenSource : CancellationTokenSource ? =null
+    private var cancellationTokenSource: CancellationTokenSource? = null
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
-    private lateinit var pmMax : String; private lateinit var pmMin : String;
-
+    private lateinit var pmMax: String;
+    private lateinit var pmMin: String;
     private val scope = MainScope()
-
+    var adapter = RecyclerVierAdapter()
 
     private val binding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
@@ -44,10 +45,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         pmMax = "50";
         pmMin = "30";
-
+        init()
+        getData()
         bindViews()
         initVariables()
         requestLocationPermission()
@@ -70,8 +71,14 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         val locationPermissionGranted =
-            ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+            ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!locationPermissionGranted) {
@@ -99,6 +106,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.R)
     private fun showBackgroundLocationPermissionRationaleDialog() {
         AlertDialog.Builder(this)
@@ -113,11 +121,12 @@ class MainActivity : AppCompatActivity() {
             }
             .show()
     }
-    private fun initVariables(){
+
+    private fun initVariables() {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    private fun requestLocationPermission(){
+    private fun requestLocationPermission() {
         ActivityCompat.requestPermissions(
             this,
             arrayOf(
@@ -136,8 +145,9 @@ class MainActivity : AppCompatActivity() {
             REQUEST_BACKGROUND_ACCESS_LOCATION_PERMISSIONS
         )
     }
+
     @SuppressLint("MissingPermission")
-    private fun fetchAirQualityData(){
+    private fun fetchAirQualityData() {
         cancellationTokenSource = CancellationTokenSource()
 
 
@@ -150,28 +160,25 @@ class MainActivity : AppCompatActivity() {
         ).addOnSuccessListener { location ->
             scope.launch {
                 binding.errorDescriptionTextView.visibility = View.GONE
-                try{
+                try {
                     val monitoringStation =
                         Repository.getNearbyMonitoringStation(37.648909, 127.064121);
 
 
-
                     val measuredValue =
-                            Repository.getLatestAirQualityData(monitoringStation!!.stationName!!)
+                        Repository.getLatestAirQualityData(monitoringStation!!.stationName!!)
 
-                    displayAirQualityData(monitoringStation,measuredValue!!, pmMax, pmMin)
-                }catch (exception : Exception){
+                    displayAirQualityData(monitoringStation, measuredValue!!, pmMax, pmMin)
+                } catch (exception: Exception) {
                     binding.errorDescriptionTextView.visibility = View.VISIBLE
-                    binding.contentsLayout.alpha =0F
-                }finally {
+                    binding.contentsLayout.alpha = 0F
+                } finally {
                     binding.progressBar.visibility = View.GONE
 
                     binding.refresh.isRefreshing = false
 
 
-
                 }
-
 
 
             }
@@ -179,22 +186,28 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun bindViews(){
+    private fun bindViews() {
         binding.refresh.setOnRefreshListener {
             fetchAirQualityData()
         }
     }
+
     @SuppressLint("SetTextI18n")
-    fun displayAirQualityData(monitoringStation: MonitoringStation, measuredValue: MeasuredValue, pmMax : String, pmMin : String) {
+    fun displayAirQualityData(
+        monitoringStation: MonitoringStation,
+        measuredValue: MeasuredValue,
+        pmMax: String,
+        pmMin: String
+    ) {
 
         binding.contentsLayout.animate()
-                .alpha(1F)
-                .start()
+            .alpha(1F)
+            .start()
         binding.measuringStationNameTextView.text = monitoringStation.stationName       // 노원구
-        var str : String = binding.contentsLayout.animate().toString()
-        var str1 : String = binding.contentsLayout.animate().alpha(1F).toString()
-        var str2 : String = binding.contentsLayout.animate().alpha(1F).start().toString()
-        var str3 : String = binding.measuringStationNameTextView.text.toString()
+        var str: String = binding.contentsLayout.animate().toString()
+        var str1: String = binding.contentsLayout.animate().alpha(1F).toString()
+        var str2: String = binding.contentsLayout.animate().alpha(1F).start().toString()
+        var str3: String = binding.measuringStationNameTextView.text.toString()
         Log.v("z", str);    // android.view.ViewPropertyAnimator@c3d2c8c
         Log.v("z", str1);   // android.view.ViewPropertyAnimator@c3d2c8c
         Log.v("z", str2);   // kotlin.Unit
@@ -212,19 +225,59 @@ class MainActivity : AppCompatActivity() {
             Log.v("z", grade.toString());                               // 나쁨 , 이모티콘
         }
 
-            with(measuredValue) {
-//            if ( pm10Value > pmMax.toString()) {
-//
-//            }
+        with(measuredValue) {
             binding.fineDustInformationTextView.text =
-                    "미세먼지: $pm10Value ㎍/㎥ ${(pm10Grade ?: Grade.UNKNOWN).emoji}"
+                "미세먼지: $pm10Value ㎍/㎥ ${(pm10Grade ?: Grade.UNKNOWN).emoji}"
             binding.ultraFineDuistInformationTextView.text =
-                    "초미세먼지: $pm25Value ㎍/㎥ ${(pm25Grade ?: Grade.UNKNOWN).emoji}"
+                "초미세먼지: $pm25Value ㎍/㎥ ${(pm25Grade ?: Grade.UNKNOWN).emoji}"
+
+//            with(binding.so2Item) {
+//                    //item_name.text = "아황산가스"
+////                    gradeTextView.text = (so2Grade ?: Grade.UNKNOWN).toString()
+////                valueTextView.text = "$so2Value ppm"
+//            }
+//
+//            with(binding.coItem) {
+//                labelTextView.text = "일산화탄소"
+//                gradeTextView.text = (coGrade ?: Grade.UNKNOWN).toString()
+//                valueTextView.text = "$coValue ppm"
+//            }
+//
+//            with(binding.o3Item) {
+////                labelTextView.text = "오존"
+////                gradeTextView.text = (o3Grade ?: Grade.UNKNOWN).toString()
+////                valueTextView.text = "$o3Value ppm"
+//            }
+//
+//            with(binding.no2Item) {
+////                labelTextView.text = "이산화질소"
+////                gradeTextView.text = (no2Grade ?: Grade.UNKNOWN).toString()
+////                valueTextView.text = "$no2Value ppm"
+//            }
         }
+
     }
+
     companion object {
         private const val REQUEST_ACCESS_LOCATION_PERMISSIONS = 100
         private const val REQUEST_BACKGROUND_ACCESS_LOCATION_PERMISSIONS = 101
 
+    }
+
+    private fun init() {
+        val recyclerView = binding.itemRecyclers
+        val gridLayoutManager = GridLayoutManager(this,2)
+        recyclerView.setLayoutManager(gridLayoutManager)
+        recyclerView.setAdapter(adapter)
+        adapter.setOnClickListener(object : OnItemClickEventListener {
+            override fun onItemClick(v: View) {
+
+            }
+        })
+    }
+
+    private fun getData() {
+        adapter.addItem("장치 추가하기",R.drawable.ic_launcher_foreground)
+        adapter.addItem("창문",R.drawable.awful)
     }
 }

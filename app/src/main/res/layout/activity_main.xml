@@ -6,149 +6,170 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-<FrameLayout
-    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
-        android:layout_gravity="center"/>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/errorDescriptionTextView"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="gone"
-        android:text="예기치 못한 문제가 발생했습니다\n잠시 후 다시 시도해주세요"/>
-    <androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/contentsLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:background="@color/gray"
-    android:alpha="0"
-    tools:context=".MainActivity">
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/measuringStationNameTextView"
-    android:layout_marginTop="50dp"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    tools:text="강남대로"
-    android:textColor="@color/white"
-    android:textSize="40sp"
-    android:textStyle="bold"
-    app:layout_constraintTop_toTopOf="parent"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/totalGraddeLabelTextView"
-        app:layout_constraintTop_toBottomOf="@id/measuringStationNameTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="매우나쁨"
-        android:textColor="@color/white"
-        android:layout_marginTop="6dp"
-        android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/errorDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="예기치 못한 문제가 발생했습니다\n잠시 후 다시 시도해주세요"
+            android:visibility="gone" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/totalGradeEmojiTextView"
-        tools:text="🤪"
-        android:textSize="95sp"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/totalGraddeLabelTextView"/>
-
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        android:id="@+id/fineDustInformationTextView"
-        app:layout_constraintTop_toBottomOf="@id/totalGradeEmojiTextView"
-        tools:text="미세먼지: 40 😩"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:gravity="center"
-        app:layout_constraintEnd_toStartOf="@id/ultraFineDuistInformationTextView"
-        android:layout_marginTop="16dp"/>
-
-<TextView
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:id="@+id/ultraFineDuistInformationTextView"
-    android:gravity="center"
-    android:textColor="@color/white"
-    android:textSize="16sp"
-    app:layout_constraintTop_toTopOf="@id/fineDustInformationTextView"
-    tools:text="초미세먼지: 10 🥳"
-    app:layout_constraintStart_toEndOf="@id/fineDustInformationTextView"
-    app:layout_constraintEnd_toEndOf="parent"/>
-
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:background="@color/white"
-        android:alpha="0.5"
-        app:layout_constraintTop_toBottomOf="@id/fineDustInformationTextView"
-        android:layout_marginTop="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/upperDivider"
-        android:layout_marginHorizontal="20dp"
-        />
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/upperDivider"
-        android:layout_marginVertical="10dp"
-        android:layout_marginHorizontal="30dp"
-        android:orientation="vertical">
-
-
-
-        <include
-            android:id="@+id/so2Item"
-            layout="@layout/view_measured_item"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentsLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-        <include
-            android:id="@+id/coItem"
-            layout="@layout/view_measured_item"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-        <include
-            android:id="@+id/o3Item"
-            layout="@layout/view_measured_item"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-        <include
-            android:id="@+id/no2Item"
-            layout="@layout/view_measured_item"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
+            android:layout_height="match_parent"
+            android:alpha="0"
+            tools:background="@color/gray"
+            tools:context=".MainActivity">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/measuringStationNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="강남대로" />
+
+            <TextView
+                android:id="@+id/totalGraddeLabelTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/measuringStationNameTextView"
+                tools:text="매우나쁨" />
+
+            <TextView
+                android:id="@+id/totalGradeEmojiTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/white"
+                android:textSize="95sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalGraddeLabelTextView"
+                tools:text="🤪" />
+
+            <TextView
+                android:id="@+id/fineDustInformationTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@id/ultraFineDuistInformationTextView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/totalGradeEmojiTextView"
+                tools:text="미세먼지: 40 😩" />
+
+            <TextView
+                android:id="@+id/ultraFineDuistInformationTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/fineDustInformationTextView"
+                app:layout_constraintTop_toTopOf="@id/fineDustInformationTextView"
+                tools:text="초미세먼지: 10 🥳" />
+
+            <View
+                android:id="@+id/upperDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:alpha="0.5"
+                android:background="@color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/fineDustInformationTextView" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/item_recyclers"
+                android:layout_width="411dp"
+                android:layout_height="500dp"
+                android:layout_marginTop="360dp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="1dp" />
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="0dp"-->
+            <!--                android:layout_height="0dp"-->
+            <!--                android:layout_marginHorizontal="30dp"-->
+            <!--                android:layout_marginVertical="10dp"-->
+            <!--                android:orientation="vertical"-->
+            <!--                app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                app:layout_constraintStart_toStartOf="parent"-->
+            <!--                app:layout_constraintTop_toTopOf="@id/upperDivider">-->
+
+            <!--&lt;!&ndash;                <GridView&ndash;&gt;-->
+            <!--&lt;!&ndash;                    android:id="@+id/gridview"&ndash;&gt;-->
+            <!--&lt;!&ndash;                    android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;                    android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;                    android:columnWidth="140.00dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;                    android:numColumns="auto_fit"&ndash;&gt;-->
+            <!--&lt;!&ndash;                    android:stretchMode="columnWidth" />&ndash;&gt;-->
 
 
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+            <!--                &lt;!&ndash;        <include&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:id="@+id/so2Item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            layout="@layout/grid_item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_height="1dp"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_weight="1"/>&ndash;&gt;-->
+            <!--                &lt;!&ndash;        <include&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:id="@+id/coItem"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            layout="@layout/grid_item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_height="1dp"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_weight="1"/>&ndash;&gt;-->
+            <!--                &lt;!&ndash;        <include&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:id="@+id/o3Item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            layout="@layout/grid_item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_height="1dp"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_weight="1"/>&ndash;&gt;-->
+            <!--                &lt;!&ndash;        <include&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:id="@+id/no2Item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            layout="@layout/grid_item"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_height="1dp"&ndash;&gt;-->
+            <!--                &lt;!&ndash;            android:layout_weight="1"/>&ndash;&gt;-->
+
+            <!--                <androidx.recyclerview.widget.RecyclerView-->
+            <!--                    android:id="@+id/item_recyclers"-->
+            <!--                    android:layout_width="409dp"-->
+            <!--                    android:layout_height="408dp" />-->
+            <!--            </LinearLayout>-->
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
