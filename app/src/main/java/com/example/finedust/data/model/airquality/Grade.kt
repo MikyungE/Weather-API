@@ -10,13 +10,13 @@ enum class Grade(val label :String ,
                  ) {
 
     @SerializedName("1")
-    AWFUL("매우나쁨","\uD83C\uDF2B",R.drawable.awful),
-    @SerializedName("2")
-    BAD("나쁨","☁️",R.drawable.bad),
-    @SerializedName("3")
-    NORMAL("보통","\uD83C\uDF25️",R.drawable.normal),
-    @SerializedName("4")
     GOOD("좋음","☀️",R.drawable.good),
+    @SerializedName("2")
+    NORMAL("보통","\uD83C\uDF25️",R.drawable.normal),
+    @SerializedName("3")
+    BAD("나쁨","☁️",R.drawable.bad),
+    @SerializedName("4")
+    AWFUL("매우나쁨","\uD83C\uDF2B",R.drawable.awful),
 
     UNKNOWN("미측정","🧐",R.color.gray);
 

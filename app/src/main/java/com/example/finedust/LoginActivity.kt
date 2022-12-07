@@ -27,6 +27,8 @@ class LoginActivity : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setText("SingUp"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+        ItemList.nameList.add("장치 추가하기");
+        ItemList.imageList.add(R.drawable.ic_launcher_foreground);
         var adapter = LoginAdapter(getSupportFragmentManager(),this,tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))

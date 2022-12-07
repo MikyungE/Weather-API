@@ -277,7 +277,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getData() {
+//        ItemList.nameList.add("장치 추가하기");
+//        ItemList.imageList.add(R.drawable.ic_launcher_foreground);
         adapter.addItem("장치 추가하기",R.drawable.ic_launcher_foreground)
-        adapter.addItem("창문",R.drawable.awful)
+        intent.getStringExtra("title")?.let { adapter.addItem(it,R.drawable.awful) };
+        //adapter.addItem("창문",R.drawable.awful)
     }
 }

@@ -17,9 +17,15 @@
         android:theme="@style/Theme.FineDust"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Device"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".MainActivity"
-            android:exported="false"
-            >
+            android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

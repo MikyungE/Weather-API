@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.time.Instant
 
 
-class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class DeviceHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     var tv_movie_title: TextView
     lateinit var image : LinearLayout
     init {
@@ -22,9 +22,13 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         tv_movie_title.setText(title)
         image.setBackgroundResource(backgroundImage)
         itemView.setOnClickListener({
-            val next = Intent(itemView.context,Device::class.java)
+//            ItemList.nameList.add(title);
+//            ItemList.nameList.add(tv_movie_title.getText().toString());
+//            ItemList.imageList.add(backgroundImage);
+            val next = Intent(itemView.context,MainActivity::class.java)
+            next.putExtra("title",tv_movie_title.getText().toString());
+            next.putExtra("image",backgroundImage);
             itemView.context.startActivity(next)
-            //Toast.makeText(itemView.context,title,Toast.LENGTH_SHORT).show()
         })
     }
 }
