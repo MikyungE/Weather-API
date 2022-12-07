@@ -39,6 +39,7 @@ class RecyclerVierAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //        ItemList.imageList.add(image);
         listData.add(title)
         imageList.add(image)
+        // 장치 추가를 위함.
     }
 
     fun setOnClickListener(onClickListener: OnItemClickEventListener) {

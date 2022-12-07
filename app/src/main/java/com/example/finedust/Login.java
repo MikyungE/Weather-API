@@ -23,6 +23,7 @@ public class Login extends Fragment {
             public void onClick(View v) {
                Intent next = new Intent(v.getContext(),MainActivity.class);
                startActivity(next);
+               // Intent를 사용해 다음 activity를 띄워줌.
             }
         });
         return root;

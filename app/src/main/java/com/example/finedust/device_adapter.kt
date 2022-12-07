@@ -26,7 +26,7 @@ class DeviceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         fun onItemClick(v: View)
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        //Log.v("list",ItemList.nameList.toString());
+        //Log.v("list",ItemList.nameList.toString());  // print Log
         (holder as DeviceHolder).onBind(listData[position],imageList[position])
     }
 
@@ -36,7 +36,7 @@ class DeviceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun addItem(title: String, image: Int) {
         // 외부에서 item을 추가시킬 함수입니다.
-//        ItemList.nameList.add(title);
+//        ItemList.nameList.add(title); // testCode
 //        ItemList.imageList.add(image);
         listData.add(title)
         imageList.add(image)

@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        pmMax = "50";
-        pmMin = "30";
         init()
         getData()
         bindViews()
@@ -56,7 +54,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-
         cancellationTokenSource?.cancel()
         scope.cancel()
     }
@@ -150,41 +147,30 @@ class MainActivity : AppCompatActivity() {
     private fun fetchAirQualityData() {
         cancellationTokenSource = CancellationTokenSource()
 
-
         fusedLocationProviderClient.getCurrentLocation(
-            //high accuracy 는 정확도는 높지만 배터리를 많이 먹음
-            // 여기서는 어차피 한번만 요청 하므로 그냥 씀
             LocationRequest.PRIORITY_HIGH_ACCURACY,
             cancellationTokenSource!!.token
-
         ).addOnSuccessListener { location ->
             scope.launch {
                 binding.errorDescriptionTextView.visibility = View.GONE
                 try {
                     val monitoringStation =
                         Repository.getNearbyMonitoringStation(37.648909, 127.064121);
-
-
+                                                                    // 한국성대학교의 위치 임의 설정.
                     val measuredValue =
                         Repository.getLatestAirQualityData(monitoringStation!!.stationName!!)
 
-                    displayAirQualityData(monitoringStation, measuredValue!!, pmMax, pmMin)
+                    displayAirQualityData(monitoringStation, measuredValue!!)
                 } catch (exception: Exception) {
                     binding.errorDescriptionTextView.visibility = View.VISIBLE
                     binding.contentsLayout.alpha = 0F
                 } finally {
                     binding.progressBar.visibility = View.GONE
-
                     binding.refresh.isRefreshing = false
-
-
                 }
-
-
             }
         }
     }
-
 
     private fun bindViews() {
         binding.refresh.setOnRefreshListener {
@@ -195,92 +181,45 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun displayAirQualityData(
         monitoringStation: MonitoringStation,
-        measuredValue: MeasuredValue,
-        pmMax: String,
-        pmMin: String
+        measuredValue: MeasuredValue
     ) {
-
         binding.contentsLayout.animate()
             .alpha(1F)
             .start()
         binding.measuringStationNameTextView.text = monitoringStation.stationName       // 노원구
-        var str: String = binding.contentsLayout.animate().toString()
-        var str1: String = binding.contentsLayout.animate().alpha(1F).toString()
-        var str2: String = binding.contentsLayout.animate().alpha(1F).start().toString()
-        var str3: String = binding.measuringStationNameTextView.text.toString()
-        Log.v("z", str);    // android.view.ViewPropertyAnimator@c3d2c8c
-        Log.v("z", str1);   // android.view.ViewPropertyAnimator@c3d2c8c
-        Log.v("z", str2);   // kotlin.Unit
-        Log.v("z", str3);   // 노원구
-        Log.v("z", pmMax);  // 50
-
 
         (measuredValue.khaiGrade ?: Grade.UNKNOWN).let { grade ->
             binding.root.setBackgroundResource(grade.colorResId)
             binding.totalGraddeLabelTextView.text = grade.label
-            binding.totalGradeEmojiTextView.text = grade.emoji
-            Log.v("z", grade.colorResId.toString());                    // 2131165273
-            Log.v("z", grade.label.toString());                         // 나쁨
-            Log.v("z", grade.emoji.toString());                         // 이모티콘
-            Log.v("z", grade.toString());                               // 나쁨 , 이모티콘
+            binding.totalGradeEmojiTextView.text = grade.emoji      // 좋음, 나쁨 처리
         }
 
         with(measuredValue) {
             binding.fineDustInformationTextView.text =
-                "미세먼지: $pm10Value ㎍/㎥ ${(pm10Grade ?: Grade.UNKNOWN).emoji}"
+                "미세먼지: $pm10Value ㎍/㎥ ${(pm10Grade ?: Grade.UNKNOWN).emoji}"    // 받아온 변수 출력.
             binding.ultraFineDuistInformationTextView.text =
                 "초미세먼지: $pm25Value ㎍/㎥ ${(pm25Grade ?: Grade.UNKNOWN).emoji}"
-
-//            with(binding.so2Item) {
-//                    //item_name.text = "아황산가스"
-////                    gradeTextView.text = (so2Grade ?: Grade.UNKNOWN).toString()
-////                valueTextView.text = "$so2Value ppm"
-//            }
-//
-//            with(binding.coItem) {
-//                labelTextView.text = "일산화탄소"
-//                gradeTextView.text = (coGrade ?: Grade.UNKNOWN).toString()
-//                valueTextView.text = "$coValue ppm"
-//            }
-//
-//            with(binding.o3Item) {
-////                labelTextView.text = "오존"
-////                gradeTextView.text = (o3Grade ?: Grade.UNKNOWN).toString()
-////                valueTextView.text = "$o3Value ppm"
-//            }
-//
-//            with(binding.no2Item) {
-////                labelTextView.text = "이산화질소"
-////                gradeTextView.text = (no2Grade ?: Grade.UNKNOWN).toString()
-////                valueTextView.text = "$no2Value ppm"
-//            }
         }
-
     }
 
-    companion object {
+    companion object {      // 권한.
         private const val REQUEST_ACCESS_LOCATION_PERMISSIONS = 100
         private const val REQUEST_BACKGROUND_ACCESS_LOCATION_PERMISSIONS = 101
-
     }
 
-    private fun init() {
+    private fun init() {                            // 초기화. 기능 추가를 위함.
         val recyclerView = binding.itemRecyclers
         val gridLayoutManager = GridLayoutManager(this,2)
         recyclerView.setLayoutManager(gridLayoutManager)
         recyclerView.setAdapter(adapter)
         adapter.setOnClickListener(object : OnItemClickEventListener {
             override fun onItemClick(v: View) {
-
             }
         })
     }
 
-    private fun getData() {
-//        ItemList.nameList.add("장치 추가하기");
-//        ItemList.imageList.add(R.drawable.ic_launcher_foreground);
+    private fun getData() {         // 액티비티가 넘어왔을 때, 동작. (다음 페이지에서)
         adapter.addItem("장치 추가하기",R.drawable.ic_launcher_foreground)
         intent.getStringExtra("title")?.let { adapter.addItem(it,R.drawable.awful) };
-        //adapter.addItem("창문",R.drawable.awful)
     }
 }

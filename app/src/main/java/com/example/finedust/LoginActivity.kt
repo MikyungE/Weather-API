@@ -36,6 +36,5 @@ class LoginActivity : AppCompatActivity() {
 //        button.setOnClickListener{
 //            val next = Intent(this,MainActivity::class.java)
 //        }
-
     }
 }

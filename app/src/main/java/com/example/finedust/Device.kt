@@ -26,7 +26,7 @@ class Device : AppCompatActivity() {
             }
         })
     }
-    fun getData(){
+    fun getData(){  // 어댑터에 아이템 함수를 이용하여 하나씩 추가.
         adapter.addItem("창문입니다~",R.color.white)
         adapter.addItem("창문이에유~",R.color.white)
         adapter.addItem("창문입니다~",R.color.white)

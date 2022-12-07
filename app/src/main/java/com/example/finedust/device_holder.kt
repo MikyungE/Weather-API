@@ -27,7 +27,9 @@ class DeviceHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //            ItemList.imageList.add(backgroundImage);
             val next = Intent(itemView.context,MainActivity::class.java)
             next.putExtra("title",tv_movie_title.getText().toString());
-            next.putExtra("image",backgroundImage);
+            next.putExtra("image",backgroundImage)
+            // 넘어가는 페이지에 key value 형식으로 값을 넘겨줌.
+            // 앞에 쓰이는 변수를 getStringExtra("title")로 받을 수 있음.
             itemView.context.startActivity(next)
         })
     }

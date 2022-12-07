@@ -22,9 +22,10 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         tv_movie_title.setText(title)
         image.setBackgroundResource(backgroundImage)
         itemView.setOnClickListener({
-            val next = Intent(itemView.context,Device::class.java)
+            val next = Intent(itemView.context, Device::class.java)
             itemView.context.startActivity(next)
-            //Toast.makeText(itemView.context,title,Toast.LENGTH_SHORT).show()
+            // 다음 페이지 지정 후, itemView 이벤트 발생시, 다음 activity 띄워줌.
+            // Toast.makeText(itemView.context,title,Toast.LENGTH_SHORT).show()
         })
     }
 }
